@@ -11,7 +11,7 @@ class CustomInputField extends StatefulWidget {
     this.onTap,
     required this.label,
 
-    this.suffixPressed,
+    this.suffixPressed, this.onSaved, this.onEditingComplete,
   });
 
   final TextEditingController controller;
@@ -19,6 +19,8 @@ class CustomInputField extends StatefulWidget {
   final Function? onChange;
   final Function? onSubmit;
   final Function? onTap;
+  final Function? onSaved;
+  final Function? onEditingComplete;
   final String label;
 
   final VoidCallback? suffixPressed;
@@ -47,6 +49,8 @@ class _CustomInputFieldState extends State<CustomInputField> {
       child: SizedBox(
         height: isError ? 90 : 60,
         child: TextFormField(
+          onEditingComplete: widget.onEditingComplete as void Function()?,
+          onSaved: widget.onSaved as void Function(String?)?,
           controller: widget.controller,
           keyboardType: widget.type,
           obscureText: isPassword,

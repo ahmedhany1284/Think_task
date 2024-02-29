@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:think_task/features/user/presentaion/view/widget/user_view_body.dart';
 
 class UserView extends StatelessWidget {
   const UserView({super.key});
@@ -6,9 +7,7 @@ class UserView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(
-        child: Text('User View'),
-      ),
+      body: UserViewBody()
     );
   }
 }
