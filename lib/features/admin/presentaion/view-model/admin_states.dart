@@ -32,3 +32,12 @@ class GetDataSuccessState extends AdminStates {
   List<Object> get props => [fieldNames];
 }
 class GetDataFailedState extends AdminStates {}
+class GetNotificationsHistorySuccessState extends AdminStates {
+  final Map<String, dynamic> notificationsHistory;
+
+  const GetNotificationsHistorySuccessState(this.notificationsHistory);
+
+  @override
+  List<Object> get props => [notificationsHistory];
+}
+class GetNotificationsHistoryFailedState extends AdminStates {}

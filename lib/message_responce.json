@@ -1,0 +1,42 @@
+{
+  "senderId": null,
+  "category": null,
+  "collapseKey": "com.example.think_task",
+  "contentAvailable": false,
+  "data": {
+    "id": 123,
+    "type": "order",
+    "click_action": "FLUTTER_NOTIFICATION_CLICK"
+  },
+  "from": 1020539909116,
+  "messageId": "0:1713537703340661%62510d4362510d43",
+  "messageType": null,
+  "mutableContent": false,
+  "notification": {
+    "title": "Admin Panel Notification",
+    "titleLocArgs": [],
+    "titleLocKey": null,
+    "body": "Data has been updated",
+    "bodyLocArgs": [],
+    "bodyLocKey": null,
+    "android": {
+      "channelId": null,
+      "clickAction": null,
+      "color": null,
+      "count": null,
+      "imageUrl": null,
+      "link": null,
+      "priority": 0,
+      "smallIcon": null,
+      "sound": "default",
+      "ticker": null,
+      "tag": null,
+      "visibility": 0
+    },
+    "apple": null,
+    "web": null
+  },
+  "sentTime": 1713537703323,
+  "threadId": null,
+  "ttl": 2419200
+}

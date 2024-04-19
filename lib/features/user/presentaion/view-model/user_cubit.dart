@@ -71,7 +71,7 @@ class UserCubit extends Cubit<UserStates> {
     }
   }
 
-  Future<void>submitDtate()async{
+  Future<void>submitData()async{
     try{
       print(data);
       print(fieldKeys);

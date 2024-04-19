@@ -35,7 +35,7 @@ class UserViewBody extends StatelessWidget {
                              context.read<UserCubit>().putInValues();
                              context.read<UserCubit>().combineToMap();
                 
-                              await context.read<UserCubit>().submitDtate();
+                              await context.read<UserCubit>().submitData();
                               final result = context.read<UserCubit>().data;
                              showDialog(
                                context: context,

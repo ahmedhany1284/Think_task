@@ -8,6 +8,9 @@ import 'package:think_task/core/presentaion/widgets/form_field_input.dart';
 import 'package:think_task/features/admin/presentaion/view-model/admin_cubit.dart';
 import 'package:think_task/features/admin/presentaion/view/widgets/admin_list_view.dart';
 import 'package:think_task/features/admin/presentaion/view/widgets/custom_alert_widget.dart';
+import 'package:think_task/features/admin/presentaion/view/widgets/norification_history_dialog.dart';
+
+import '../../../../user/presentaion/view/widget/results.dart';
 
 class AdminViewBody extends StatelessWidget {
   AdminViewBody({super.key});
@@ -20,44 +23,67 @@ class AdminViewBody extends StatelessWidget {
     return BlocBuilder<AdminCubit, AdminStates>(
       builder: (context, state) {
         return Scaffold(
+            appBar: AppBar(
+              title: const Text('Admin View'),
+              backgroundColor: AppColors.appBar,
+              elevation: 1.2,
+              actions: [
+                IconButton(
+                  onPressed: () async{
+                    await context.read<AdminCubit>().getNotificationHistory();
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+
+                        print(context.read<AdminCubit>().notificationHistory );
+                        return NotificationsHistoryDialog(
+                          result: context.read<AdminCubit>().notificationHistory,
+                        );
+                      },
+                    );
+                  },
+                  icon: const Icon(Icons.notifications),
+                ),
+              ],
+            ),
             body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 100),
-          child: Form(
-            key: formKey,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                   AdminListView(),
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10.0),
-                    child: Container(
-                      width: 100,
-                      color: AppColors.primary,
-                      child: IconButton(
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return CustomAlertWidget(
-                                controller: controller,
-                                formKey: formKey,
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 100),
+              child: Form(
+                key: formKey,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      AdminListView(),
+                      const SizedBox(
+                        height: 20.0,
+                      ),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10.0),
+                        child: Container(
+                          width: 100,
+                          color: AppColors.primary,
+                          child: IconButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return CustomAlertWidget(
+                                    controller: controller,
+                                    formKey: formKey,
+                                  );
+                                },
                               );
                             },
-                          );
-              
-                        },
-                        icon: const Icon(Icons.add),
+                            icon: const Icon(Icons.add),
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
-        ));
+            ));
       },
     );
   }

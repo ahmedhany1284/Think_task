@@ -1,0 +1,25 @@
+{
+  "to": "device_token_or_topic",
+  "notification": {
+    "title": "Notification Title",
+    "body": "Notification Body",
+    "sound": "default"
+  },
+  "android": {
+    "priority": "HIGH",
+    "notification": {
+      "notification_priority": "PRIORITY_MAX",
+      "sound": "default",
+      "default_sound": true,
+      "default_vibrate_timings": true,
+      "default_light_settings": true
+    }
+  },
+  "data": {
+    "type": "order",
+    "id": "123",
+    "click_action": "FLUTTER_NOTIFICATION_CLICK"
+  }
+}
+
+
