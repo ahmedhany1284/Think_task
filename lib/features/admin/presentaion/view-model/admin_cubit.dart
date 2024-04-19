@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -103,6 +104,7 @@ class AdminCubit extends Cubit<AdminStates> {
     // Check if the request was successful
     if (response.statusCode == 200) {
       print('Notification sent successfully');
+      print('Response: ${response.body.toString()}');
       await extractAndStoreMessages(Constants.notificationResponceModel!);
       await getNotificationHistory();
     } else {
@@ -111,13 +113,19 @@ class AdminCubit extends Cubit<AdminStates> {
   }
 
   Future<void> extractAndStoreMessages(NotificationResponceModel message) async {
+    print('got to extractAndStoreMessages');
     final sentTime = message.sentTime;
     final DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(sentTime);
     final formattedDateTime = DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
 
-    final CollectionReference collection = FirebaseFirestore.instance.collection('messages');
+    // final CollectionReference collection = FirebaseFirestore.instance.collection('messages');
+    // await collection.doc('Notifications').update({formattedDateTime: message.notification.body});
 
-    await collection.doc('Notifications').update({formattedDateTime: message.notification.body});
+    final DatabaseReference databaseReference = FirebaseDatabase.instance.ref('messages');
+
+    await databaseReference.update({formattedDateTime: message.notification.body});
+
+
 
     print('Message extracted and stored successfully.');
   }
@@ -126,21 +134,28 @@ class AdminCubit extends Cubit<AdminStates> {
 
   Future<void> getNotificationHistory() async {
     try {
-      FirebaseFirestore.instance
-          .collection('messages')
-          .doc('Notifications')
-          .snapshots()
-          .listen((event) {
-        var data = event.data();
-        if (data != null) {
-          notificationHistory = data;
-          var entries = notificationHistory.entries.toList();
-          entries.sort((a, b) => a.key.compareTo(b.key));
-          notificationHistory = Map.fromEntries(entries);
-          print(notificationHistory.toString());
-        }
-        emit(GetNotificationsHistorySuccessState(notificationHistory));
-      });
+      print('got to getNotificationHistory');
+      final ref = FirebaseDatabase.instance.ref();
+      final snapshot = await ref.child('messages').get();
+      print(snapshot.value.toString());
+      if (snapshot.exists) {
+        final data = snapshot.value as Map<dynamic, dynamic>;
+        data.forEach((key, value) {
+          notificationHistory[key.toString()] = value.toString();
+        });
+
+        var entries = notificationHistory.entries.toList();
+        entries.sort((a, b) => a.key.compareTo(b.key));
+        notificationHistory = Map.fromEntries(entries);
+
+        print('--> data notification history  is here${notificationHistory.toString()}');
+      } else {
+        print('No data available.');
+      }
+
+
+
+      emit(GetNotificationsHistorySuccessState(notificationHistory));
     } catch (e) {
       print(e.toString());
       emit(GetNotificationsHistoryFailedState());
