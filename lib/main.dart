@@ -49,6 +49,7 @@ void main() async {
   FirebaseMessaging.onMessage.listen((RemoteMessage message ) async{
     print('A new onMessage event was published!');
     if(message.notification!=null){
+      print('--->  ${message.toMap()}');
       Constants.notificationResponceModel=NotificationResponceModel.fromJson(message.toMap());
     }
     await flutterLocalNotificationsPlugin.show(

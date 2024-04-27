@@ -104,7 +104,6 @@ class AdminCubit extends Cubit<AdminStates> {
     // Check if the request was successful
     if (response.statusCode == 200) {
       print('Notification sent successfully');
-      print('Response: ${response.body.toString()}');
       await extractAndStoreMessages(Constants.notificationResponceModel!);
       await getNotificationHistory();
     } else {
@@ -113,21 +112,24 @@ class AdminCubit extends Cubit<AdminStates> {
   }
 
   Future<void> extractAndStoreMessages(NotificationResponceModel message) async {
-    print('got to extractAndStoreMessages');
-    final sentTime = message.sentTime;
-    final DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(sentTime);
-    final formattedDateTime = DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
+    try{
+      print('got to extractAndStoreMessages');
+      final sentTime = message.sentTime;
+      final DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(sentTime);
+      final formattedDateTime = DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
 
-    // final CollectionReference collection = FirebaseFirestore.instance.collection('messages');
-    // await collection.doc('Notifications').update({formattedDateTime: message.notification.body});
+      // final CollectionReference collection = FirebaseFirestore.instance.collection('messages');
+      // await collection.doc('Notifications').update({formattedDateTime: message.notification.body});
 
-    final DatabaseReference databaseReference = FirebaseDatabase.instance.ref('messages');
+      final DatabaseReference databaseReference = FirebaseDatabase.instance.ref('messages');
 
-    await databaseReference.update({formattedDateTime: message.notification.body});
+      await databaseReference.update({formattedDateTime: message.notification.body});
 
+      print('Message extracted and stored successfully.');
+    }catch (e){
+      print('--> errorstoring the massage ${e.toString()}');
+    }
 
-
-    print('Message extracted and stored successfully.');
   }
 
 
@@ -137,7 +139,6 @@ class AdminCubit extends Cubit<AdminStates> {
       print('got to getNotificationHistory');
       final ref = FirebaseDatabase.instance.ref();
       final snapshot = await ref.child('messages').get();
-      print(snapshot.value.toString());
       if (snapshot.exists) {
         final data = snapshot.value as Map<dynamic, dynamic>;
         data.forEach((key, value) {
@@ -148,7 +149,6 @@ class AdminCubit extends Cubit<AdminStates> {
         entries.sort((a, b) => a.key.compareTo(b.key));
         notificationHistory = Map.fromEntries(entries);
 
-        print('--> data notification history  is here${notificationHistory.toString()}');
       } else {
         print('No data available.');
       }

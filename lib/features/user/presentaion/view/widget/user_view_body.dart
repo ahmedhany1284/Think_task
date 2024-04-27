@@ -21,6 +21,73 @@ class UserViewBody extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
+                     Center(
+                      child: Stack(
+                        children: [
+                          CircleAvatar(
+                            radius: 50.0,
+                            backgroundImage: NetworkImage('${context.read<UserCubit>().imageLink}'),
+                          ),
+                          Positioned(
+                            bottom: 5.0,
+                            right: 5.0,
+                            child: GestureDetector(
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text("Choose an option"),
+                                      content: SingleChildScrollView(
+                                        child: ListBody(
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () {
+                                                context.read<UserCubit>().pickImageFromGallery();
+                                                if(state is UploadImageToFirebaseStorageLoadingState){
+                                                  const CircularProgressIndicator();
+                                                }
+                                                if(state is UploadImageToFirebaseStorageLoadedState){
+                                                  context.pop();
+                                                }
+                                              },
+                                              child: Text("Pick from gallery"),
+                                            ),
+                                            SizedBox(height: 20),
+                                            GestureDetector(
+                                              onTap: () {
+                                                context.read<UserCubit>().pickImageFromCamera();
+                                                if(state is UploadImageToFirebaseStorageLoadingState){
+                                                  const CircularProgressIndicator();
+                                                }
+                                                if(state is UploadImageToFirebaseStorageLoadedState){
+                                                  context.pop();
+                                                }
+                                              },
+                                              child: Text("Use camera"),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+
+
+                              },
+                              child: Icon(
+                                Icons.camera,
+                                color: Colors.black,
+                                size: 28.0,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
                     UserListView(),
                     const SizedBox(
                       height: 20.0,

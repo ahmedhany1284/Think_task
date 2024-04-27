@@ -50,3 +50,19 @@ class SendDataSuccessState extends UserStates {
 }
 class SendDataFailedState extends UserStates {}
 class SendDataLoadingState extends UserStates {}
+
+
+class UploadImageToFirebaseStorageLoadingState extends UserStates {}
+class UploadImageToFirebaseStorageErrorState extends UserStates {}
+class UploadImageToFirebaseStorageLoadedState extends UserStates {}
+
+
+
+class ChooseImageState extends UserStates {
+
+  final String image;
+  const ChooseImageState(this.image);
+
+  @override
+  List<Object> get props => [image];
+}

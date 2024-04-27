@@ -20,14 +20,14 @@ class NotificationResponceModel {
     });
 
     Data data;
-    String messageId;
-    bool mutableContent;
-    int ttl;
+    String? messageId;
+    bool? mutableContent;
+    int? ttl;
     Notification notification;
-    String collapseKey;
+    String? collapseKey;
     int sentTime;
-    String from;
-    bool contentAvailable;
+    String? from;
+    bool? contentAvailable;
 
     factory NotificationResponceModel.fromJson(Map<dynamic, dynamic> json) => NotificationResponceModel(
         data: Data.fromJson(json["data"]),
@@ -61,9 +61,9 @@ class Data {
         required this.clickAction,
     });
 
-    String id;
-    String type;
-    String clickAction;
+    String? id;
+    String? type;
+    String? clickAction;
 
     factory Data.fromJson(Map<dynamic, dynamic> json) => Data(
         id: json["id"],
@@ -88,10 +88,10 @@ class Notification {
     });
 
     Android android;
-    List<dynamic> bodyLocArgs;
-    List<dynamic> titleLocArgs;
-    String title;
-    String body;
+    List<dynamic?> bodyLocArgs;
+    List<dynamic?> titleLocArgs;
+    String ?title;
+    String ?body;
 
     factory Notification.fromJson(Map<dynamic, dynamic> json) => Notification(
         android: Android.fromJson(json["android"]),
@@ -117,9 +117,9 @@ class Android {
         required this.priority,
     });
 
-    int visibility;
-    String sound;
-    int priority;
+    int? visibility;
+    String? sound;
+    int? priority;
 
     factory Android.fromJson(Map<dynamic, dynamic> json) => Android(
         visibility: json["visibility"],

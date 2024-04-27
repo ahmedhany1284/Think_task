@@ -8,15 +8,15 @@
     "type": "order",
     "click_action": "FLUTTER_NOTIFICATION_CLICK"
   },
-  "from": 1020539909116,
-  "messageId": "0:1713537703340661%62510d4362510d43",
+  "from": "1020539909116",
+  "messageId": "0:1713602955261108%62510d4362510d43",
   "messageType": null,
   "mutableContent": false,
   "notification": {
     "title": "Admin Panel Notification",
     "titleLocArgs": [],
     "titleLocKey": null,
-    "body": "Data has been updated",
+    "body": "The latest field added is aaa",
     "bodyLocArgs": [],
     "bodyLocKey": null,
     "android": {
@@ -36,7 +36,7 @@
     "apple": null,
     "web": null
   },
-  "sentTime": 1713537703323,
+  "sentTime": 1713602955244,
   "threadId": null,
   "ttl": 2419200
 }
