@@ -66,3 +66,13 @@ class ChooseImageState extends UserStates {
   @override
   List<Object> get props => [image];
 }
+
+class GetProfileSuccessState extends UserStates {
+  final Map<String, String> profileHistory;
+
+  const GetProfileSuccessState(this.profileHistory);
+
+  @override
+  List<Object> get props => [profileHistory];
+}
+class GetProfileHistoryFailedState extends UserStates {}

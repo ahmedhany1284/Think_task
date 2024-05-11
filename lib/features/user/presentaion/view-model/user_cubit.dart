@@ -100,8 +100,10 @@ class UserCubit extends Cubit<UserStates> {
 
     final pickedFile = await  _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
+      print(pickedFile.path);
       imageFile = File(pickedFile.path);
       imageLink = await uploadImageToFirebaseStorage(imageFile);
+      print(imageLink);
 
       final DateTime dateTime = DateTime.now();
       final formattedDateTime = DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
@@ -137,9 +139,10 @@ class UserCubit extends Cubit<UserStates> {
     try {
       String fileName = DateTime.now().millisecondsSinceEpoch.toString();
       Reference firebaseStorageRef =
-      FirebaseStorage.instance.ref().child('images/$fileName');
+      FirebaseStorage.instance.ref().child('Links/$fileName');
       UploadTask uploadTask = firebaseStorageRef.putFile(imageFile);
       await uploadTask.whenComplete(() => null);
+
       String downloadURL = await firebaseStorageRef.getDownloadURL();
       emit(UploadImageToFirebaseStorageLoadedState());
       return downloadURL;
@@ -150,6 +153,51 @@ class UserCubit extends Cubit<UserStates> {
       return null;
     }
   }
+
+
+
+  Map<String,String> ProfileHistory={};
+  Future<void> getProfileHistory() async {
+    try {
+      print('got to getProfileHistory');
+      final ref = FirebaseDatabase.instance.ref();
+      final snapshot = await ref.child('ProfileImage').get();
+      if (snapshot.exists) {
+        final data = snapshot.value as Map<dynamic, dynamic>;
+        data.forEach((key, value) {
+          ProfileHistory[key.toString()] = value.toString();
+        });
+
+        var entries = ProfileHistory.entries.toList();
+        entries.sort((a, b) => a.key.compareTo(b.key));
+        ProfileHistory = Map.fromEntries(entries);
+
+      } else {
+        print('No data available.');
+      }
+
+
+
+
+
+
+      emit(GetProfileSuccessState(ProfileHistory));
+    } catch (e) {
+      print(e.toString());
+      emit(GetProfileHistoryFailedState());
+    }
+  }
+
+  Future<void> deleteProfileImage(String key) async {
+    try {
+      final ref = FirebaseDatabase.instance.ref().child('ProfileImage').child(key);
+      await ref.remove();
+      print('Item deleted successfully.');
+    } catch (e) {
+      print('Failed to delete item: $e');
+    }
+  }
+
 
 
 

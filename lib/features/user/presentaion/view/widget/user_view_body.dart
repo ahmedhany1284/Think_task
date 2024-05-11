@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:think_task/core/app_router.dart';
 import 'package:think_task/core/colors/app_colors.dart';
 import 'package:think_task/features/user/presentaion/view-model/user_cubit.dart';
+import 'package:think_task/features/user/presentaion/view/widget/profile_image_list_view.dart';
 import 'package:think_task/features/user/presentaion/view/widget/results.dart';
 import 'package:think_task/features/user/presentaion/view/widget/user_list_view.dart';
 
@@ -115,6 +116,34 @@ class UserViewBody extends StatelessWidget {
                             'Submit',
                             style: TextStyle(color: Colors.white),
                 
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10.0),
+                      child: Container(
+                        width: 100,
+                        color: AppColors.primary,
+                        child: TextButton(
+                          onPressed: ()async {
+
+                              await context.read<UserCubit>().getProfileHistory();
+                              final result = BlocProvider.of<UserCubit>(context).ProfileHistory;
+                             showDialog(
+                               context: context,
+                               builder: (BuildContext context) {
+                                 return ProfileResultsView (result: result);
+                               },
+                             );
+                          },
+                          child: const Text(
+                            'profile History ',
+                            style: TextStyle(color: Colors.white),
+
                           ),
                         ),
                       ),
